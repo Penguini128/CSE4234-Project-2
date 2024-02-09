@@ -28,13 +28,16 @@
                 async function fun() {
                     const file = await fetch("events.rss");
                     const fileText = await file.text();
-                    const xml = new DOMParser().parseFromString(fileText, "text/xml");
+                    const parser = new DOMParser();
+                    const xml = parser.parseFromString(fileText, "text/xml");
                     const eventCards = document.querySelector("#event-list");
                     xml.querySelectorAll("item").forEach((item) => {
                         const itemTitle = item.querySelector("title").textContent;
-                        const itemTime = item.querySelector("start").textContent;
+                        const itemDate = new Date(item.querySelector("start").textContent);
+                        const itemTime = itemDate.toDateString();
                         const itemLocation = item.querySelector("location").textContent;
-                        const itemDescription = item.querySelector("description").textContent;
+                        const itemDescriptionData = item.querySelector("description").textContent;
+                        const itemDescription = parser.parseFromString(itemDescriptionData, "text/xml").querySelector("p").textContent;
                         const itemImageUrlTest = item.querySelector("enclosure").getAttribute("url");
                         const itemImage = itemImageUrlTest == null ? "images/default_image.jpg" : itemImageUrlTest
                         eventCards.innerHTML += `<li class="event-card">
@@ -46,6 +49,9 @@
                                                                 ${itemTime}
                                                                 <br>
                                                                 ${itemLocation}
+                                                            </p>
+                                                            <p class="event-description">
+                                                                ${itemDescription}
                                                             </p>
                                                         <div>
                                                     </div>

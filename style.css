@@ -147,7 +147,7 @@ footer.social-media nav ul li {
 .card-container {
     margin: 8px;
     box-shadow: 0px 0px 10px #222222;
-    height: 400px;
+    height: 450px;
     overflow: hidden;
 }
 
@@ -163,6 +163,10 @@ footer.social-media nav ul li {
 
 .card-text h3 {
     margin-top: 0px;
+}
+
+.event-description {
+    font-size: 11px;
 }
 
 
