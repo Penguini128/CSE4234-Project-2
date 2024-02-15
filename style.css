@@ -10,7 +10,7 @@ body {
 header {
     margin: 0px;
     width: auto;
-    background: #14213d;    
+    background: #14213d;
     color: aliceblue;
 }
 
@@ -22,7 +22,7 @@ header {
 h1 {
     display: inline-block;
     margin: 0px;
-    background: linear-gradient(to right, #8F0, #0D8);
+    background: linear-gradient(to right, #8f0, #0d8);
     background-clip: text;
     color: transparent;
 }
@@ -36,41 +36,40 @@ header nav ul li {
     border-style: solid;
     border-width: 1px;
     margin: 0.5em;
-    
 }
 
 header nav ul li a {
     display: inline-block;
-    border-color: #FFF;
-    color: #FFF;
+    border-color: #fff;
+    color: #fff;
     text-decoration: none;
     padding: 8px;
 }
 
 .active {
-    border-color: #FF0;
+    border-color: #ff0;
 }
 
 .active a {
-    color: #FF0;
+    color: #ff0;
 }
 
 header nav ul li:hover {
-    border-color: #AF0;
+    border-color: #af0;
 }
 
 header nav ul li a:hover {
-    color: #AF0;
+    color: #af0;
 }
 
 h2 {
     margin: 0px;
 }
 
-h2:after {  
+h2:after {
     display: block;
     content: "";
-    background: linear-gradient(to right, #8F0, #0D8);
+    background: linear-gradient(to right, #8f0, #0d8);
     padding: 2px 20px;
     margin: 5px 0px 30px 0px;
     width: 85vw;
@@ -112,14 +111,15 @@ footer nav ul {
     margin: 0px;
 }
 
-footer.main-footer nav ul li, footer.social-media nav ul li {
+footer.main-footer nav ul li,
+footer.social-media nav ul li {
     display: inline-block;
     margin: 10px;
 }
 
-footer.main-footer nav ul li a, 
+footer.main-footer nav ul li a,
 footer.social-media nav ul li a {
-    color:#FFF;
+    color: #fff;
 }
 
 footer.social-media nav ul li {
@@ -131,8 +131,8 @@ footer.social-media nav ul li {
 }
 
 #event-list {
-    display: block;
-    padding: 0px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .event-card {
@@ -169,9 +169,6 @@ footer.social-media nav ul li {
     font-size: 11px;
 }
 
-
-
-
 @media screen and (max-width: 768px) {
     header nav ul li {
         display: block;
@@ -193,9 +190,8 @@ footer.social-media nav ul li {
         width: auto;
     }
     .event-card {
-        display:block;
-        max-width:100%;
+        display: block;
+        max-width: 100%;
         height: auto;
     }
 }
-
