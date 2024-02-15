@@ -52,22 +52,62 @@
               itemImageUrlTest == null
                 ? "images/default_image.jpg"
                 : itemImageUrlTest;
-            eventCards.innerHTML += `<li class="event-card">
-                                                    <div class="card-container">
-                                                        <img src="${itemImage}"/>
-                                                        <div class="card-text">
-                                                            <h3>${itemTitle}</h3>
-                                                            <p>
-                                                                ${itemTime}
-                                                                <br>
-                                                                ${itemLocation}
-                                                            </p>
-                                                            <p class="event-description">
-                                                                ${itemDescription}
-                                                            </p>
-                                                        <div>
-                                                    </div>
-                                                </li>`;
+            // change here from hard code html to a list
+            const eventCard = document.createElement("li");
+            eventCard.classList.add("event-card");
+
+            const cardContainer = document.createElement("div");
+            cardContainer.classList.add("card-container");
+
+            const cardImg = document.createElement("img");
+            cardImg.src = itemImage;
+
+            const cardText = document.createElement("div");
+            cardText.classList.add("card-text");
+
+            const cardHead = document.createElement("h3");
+            cardHead.textContent = itemTitle;
+
+            const dateLocation = document.createElement("p");
+            dateLocation.innerHTML = `${itemTime}<br>${itemLocation}`;
+
+            const cardDescription = document.createElement("p");
+            cardDescription.classList.add("event-description");
+            cardDescription.textContent = itemDescription;
+            cardDescription.style.display = "none"; // initially starts off hidden
+
+            const showDescriptionButton = document.createElement("button");
+            showDescriptionButton.textContent = "Learn more";
+            // button to display the description of the card
+            showDescriptionButton.addEventListener("click", function () {
+              cardDescription.style.display = "block";
+              showDescriptionButton.style.display = "none";
+            });
+            // add all the fields to the card
+            cardText.appendChild(cardHead);
+            cardText.appendChild(dateLocation);
+            cardText.appendChild(showDescriptionButton);
+            cardText.appendChild(cardDescription);
+            cardContainer.appendChild(cardImg);
+            cardContainer.appendChild(cardText);
+            eventCard.appendChild(cardContainer);
+            eventCards.appendChild(eventCard);
+            // eventCards.innerHTML += `<li class="event-card">
+            //                                         <div class="card-container">
+            //                                             <img src="${itemImage}"/>
+            //                                             <div class="card-text">
+            //                                                 <h3>${itemTitle}</h3>
+            //                                                 <p>
+            //                                                     ${itemTime}
+            //                                                     <br>
+            //                                                     ${itemLocation}
+            //                                                 </p>
+            //                                                 <p class="event-description">
+            //                                                     ${itemDescription}
+            //                                                 </p>
+            //                                             <div>
+            //                                         </div>
+            //                                     </li>`;
           });
         }
         fun();
