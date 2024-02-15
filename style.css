@@ -131,8 +131,8 @@ footer.social-media nav ul li {
 }
 
 #event-list {
-  display: block;
-  padding: 0px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .event-card {

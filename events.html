@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <!-- The info in this head tag is the same across all pages -->
+
   <head>
     <link rel="stylesheet" href="style.css" />
     <title>Tommy Galletta's Portfolio</title>
   </head>
+
   <body>
     <!-- The layout of this header is essentially the same across all pages -->
     <header>
@@ -24,9 +26,38 @@
             <li class="active"><a href="events.html">Events</a></li>
           </ul>
         </nav>
-        <h2>Event Manager</h2>
+        <div>
+          <h2>Event Manager</h2>
+          <div style="display: flex; gap: 20px">
+            <span style="display: flex">
+              <span
+                style="background-color: #e2e2e2; color: black; padding: 10px"
+                >Title</span
+              >
+              <input
+                type="text"
+                style="border: none; padding: 0 5px"
+                id="titleInput"
+              />
+            </span>
+            <span style="display: flex">
+              <span
+                style="background-color: #e2e2e2; color: black; padding: 10px"
+                >Desc</span
+              >
+              <input
+                type="text"
+                style="border: none; padding: 0 5px"
+                id="descriptionInput"
+              />
+            </span>
+            <button onclick="searchEvents(false)">Submit</button>
+            <button onclick="searchEvents(true)">Clear Filters</button>
+          </div>
+        </div>
       </div>
     </header>
+
     <article>
       <script>
         async function fun() {
@@ -111,6 +142,48 @@
           });
         }
         fun();
+        const titleEvent = document.getElementById("titleInput");
+        titleEvent.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            searchEvents(false);
+          }
+        });
+        const descriptionEvent = document.getElementById("descriptionInput");
+
+        descriptionEvent.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            searchEvents(false);
+          }
+        });
+
+        function searchEvents(clear) {
+          const eventCards = document.querySelector("#event-list");
+          const events = eventCards.querySelectorAll(".event-card");
+          if (clear) {
+            events.forEach((event) => {
+              event.style.display = "block";
+            });
+          } else {
+            const titleKeyword = titleEvent.value.toLowerCase().trim();
+            const descriptionKeyword = descriptionEvent.value
+              .toLowerCase()
+              .trim();
+            events.forEach((event) => {
+              const title = event.querySelector("h3").innerText.toLowerCase();
+              const eventDescription = event
+                .querySelector(".event-description")
+                .innerText.toLowerCase();
+              if (
+                title.includes(titleKeyword) &&
+                eventDescription.includes(descriptionKeyword)
+              ) {
+                event.style.display = "block";
+              } else {
+                event.style.display = "none";
+              }
+            });
+          }
+        }
       </script>
       <ul id="event-list"></ul>
     </article>
