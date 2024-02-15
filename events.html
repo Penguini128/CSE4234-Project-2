@@ -48,49 +48,87 @@
 <article>
     <script>
 
-        async function fun() {
-            const file = await fetch("events.rss");
-            const fileText = await file.text();
-            const parser = new DOMParser();
-            const xml = parser.parseFromString(fileText, "text/xml");
-            const eventCards = document.querySelector("#event-list");
+async function fun() {
+          const file = await fetch("events.rss");
+          const fileText = await file.text();
+          const parser = new DOMParser();
+          const xml = parser.parseFromString(fileText, "text/xml");
+          const eventCards = document.querySelector("#event-list");
+          xml.querySelectorAll("item").forEach((item) => {
+            const itemTitle = item.querySelector("title").textContent;
+            const itemDate = new Date(item.querySelector("start").textContent);
+            const itemTime = itemDate.toDateString();
+            const itemLocation = item.querySelector("location").textContent;
+            const itemDescriptionData =
+              item.querySelector("description").textContent;
+            const itemDescription = parser
+              .parseFromString(itemDescriptionData, "text/xml")
+              .querySelector("p").textContent;
+            const itemImageUrlTest = item
+              .querySelector("enclosure")
+              .getAttribute("url");
+            const itemImage =
+              itemImageUrlTest == null
+                ? "images/default_image.jpg"
+                : itemImageUrlTest;
+            // change here from hard code html to a list
+            const eventCard = document.createElement("li");
+            eventCard.classList.add("event-card");
 
-            xml.querySelectorAll("item").forEach((item) => {
-                const itemTitle = item.querySelector("title").textContent;
-                const itemDate = new Date(item.querySelector("start").textContent);
-                const itemTime = itemDate.toDateString();
-                const itemLocation = item.querySelector("location").textContent;
-                const itemDescriptionData =
-                    item.querySelector("description").textContent;
-                const itemDescription = parser
-                    .parseFromString(itemDescriptionData, "text/xml")
-                    .querySelector("p").textContent;
-                const itemImageUrlTest = item
-                    .querySelector("enclosure")
-                    .getAttribute("url");
-                const itemImage =
-                    itemImageUrlTest == null
-                        ? "images/default_image.jpg"
-                        : itemImageUrlTest;
-                eventCards.innerHTML += `<li class="event-card">
-                                                    <div class="card-container">
-                                                        <img src="${itemImage}"/>
-                                                        <div class="card-text">
-                                                            <h3>${itemTitle}</h3>
-                                                            <p>
-                                                                ${itemTime}
-                                                                <br>
-                                                                ${itemLocation}
-                                                            </p>
-                                                            <p class="event-description">
-                                                                ${itemDescription}
-                                                            </p>
-                                                        <div>
-                                                    </div>
-                                                </li>`;
+            const cardContainer = document.createElement("div");
+            cardContainer.classList.add("card-container");
+
+            const cardImg = document.createElement("img");
+            cardImg.src = itemImage;
+
+            const cardText = document.createElement("div");
+            cardText.classList.add("card-text");
+
+            const cardHead = document.createElement("h3");
+            cardHead.textContent = itemTitle;
+
+            const dateLocation = document.createElement("p");
+            dateLocation.innerHTML = `${itemTime}<br>${itemLocation}`;
+
+            const cardDescription = document.createElement("p");
+            cardDescription.classList.add("event-description");
+            cardDescription.textContent = itemDescription;
+            cardDescription.style.display = "none"; // initially starts off hidden
+
+            const showDescriptionButton = document.createElement("button");
+            showDescriptionButton.textContent = "Learn more";
+            // button to display the description of the card
+            showDescriptionButton.addEventListener("click", function () {
+              cardDescription.style.display = "block";
+              showDescriptionButton.style.display = "none";
             });
+            // add all the fields to the card
+            cardText.appendChild(cardHead);
+            cardText.appendChild(dateLocation);
+            cardText.appendChild(showDescriptionButton);
+            cardText.appendChild(cardDescription);
+            cardContainer.appendChild(cardImg);
+            cardContainer.appendChild(cardText);
+            eventCard.appendChild(cardContainer);
+            eventCards.appendChild(eventCard);
+            // eventCards.innerHTML += `<li class="event-card">
+            //                                         <div class="card-container">
+            //                                             <img src="${itemImage}"/>
+            //                                             <div class="card-text">
+            //                                                 <h3>${itemTitle}</h3>
+            //                                                 <p>
+            //                                                     ${itemTime}
+            //                                                     <br>
+            //                                                     ${itemLocation}
+            //                                                 </p>
+            //                                                 <p class="event-description">
+            //                                                     ${itemDescription}
+            //                                                 </p>
+            //                                             <div>
+            //                                         </div>
+            //                                     </li>`;
+          });
         }
-
         fun();
         const titleEvent = document.getElementById("titleInput")
         titleEvent.addEventListener('keydown', (event) => {
@@ -110,7 +148,6 @@
             const eventCards = document.querySelector("#event-list");
             const events = eventCards.querySelectorAll(".event-card");
             if (clear) {
-                console.log(' i am here')
                 events.forEach(event => {
                     event.style.display = "block";
                 });
