@@ -1,54 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- The info in this head tag is the same across all pages -->
+  <!-- The info in this head tag is the same across all pages -->
 
-<head>
-    <link rel="stylesheet" href="style.css"/>
+  <head>
+    <link rel="stylesheet" href="style.css" />
     <title>Tommy Galletta's Portfolio</title>
-</head>
+  </head>
 
-<body>
-<!-- The layout of this header is essentially the same across all pages -->
-<header>
-    <div class="header-content">
+  <body>
+    <!-- The layout of this header is essentially the same across all pages -->
+    <header>
+      <div class="header-content">
         <h1>Tommy Galletta's Portfolio</h1>
         <nav>
-            <ul>
-                <li><a href="index.html">About Me</a></li>
-                <li>
-                    <a href="marketable-skills-and-abilities.html">Marketable Skills and Abilities</a>
-                </li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="resume.html">Resume</a></li>
-                <li><a href="contact-me.html">Contact Me</a></li>
-                <li class="active"><a href="events.html">Events</a></li>
-            </ul>
+          <ul>
+            <li><a href="index.html">About Me</a></li>
+            <li>
+              <a href="marketable-skills-and-abilities.html"
+                >Marketable Skills and Abilities</a
+              >
+            </li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="contact-me.html">Contact Me</a></li>
+            <li class="active"><a href="events.html">Events</a></li>
+          </ul>
         </nav>
         <div>
-            <h2>Event Manager</h2>
-            <div style="display:flex; gap:20px">
-                    <span style="display: flex; ">
-                    <span style="background-color: #e2e2e2; color: black; padding: 10px; ">Title</span>
-                    <input type="text" style="border: none;  padding: 0 5px" id="titleInput">
-                    </span>
-                <span style="display: flex;">
-                        <span style="background-color: #e2e2e2; color: black; padding: 10px; ">Desc</span>
-                      <input type="text" style="border: none; padding: 0 5px;" id="descriptionInput">
-
-                    </span>
-                <button onclick="searchEvents(false)">Submit</button>
-                <button onclick="searchEvents(true)">Clear Filters</button>
-            </div>
-
-
+          <h2>Event Manager</h2>
+          <div style="display: flex; gap: 20px">
+            <span style="display: flex">
+              <span
+                style="background-color: #e2e2e2; color: black; padding: 10px"
+                >Title</span
+              >
+              <input
+                type="text"
+                style="border: none; padding: 0 5px"
+                id="titleInput"
+              />
+            </span>
+            <span style="display: flex">
+              <span
+                style="background-color: #e2e2e2; color: black; padding: 10px"
+                >Desc</span
+              >
+              <input
+                type="text"
+                style="border: none; padding: 0 5px"
+                id="descriptionInput"
+              />
+            </span>
+            <button onclick="searchEvents(false)">Submit</button>
+            <button onclick="searchEvents(true)">Clear Filters</button>
+          </div>
         </div>
-    </div>
-</header>
+      </div>
+    </header>
 
-<article>
-    <script>
-
-async function fun() {
+    <article>
+      <script>
+        async function fun() {
           const file = await fetch("events.rss");
           const fileText = await file.text();
           const parser = new DOMParser();
@@ -130,79 +142,86 @@ async function fun() {
           });
         }
         fun();
-        const titleEvent = document.getElementById("titleInput")
-        titleEvent.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                searchEvents(false)
-            }
-        })
-        const descriptionEvent = document.getElementById("descriptionInput")
+        const titleEvent = document.getElementById("titleInput");
+        titleEvent.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            searchEvents(false);
+          }
+        });
+        const descriptionEvent = document.getElementById("descriptionInput");
 
-        descriptionEvent.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                searchEvents(false)
-            }
-        })
+        descriptionEvent.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            searchEvents(false);
+          }
+        });
 
         function searchEvents(clear) {
-            const eventCards = document.querySelector("#event-list");
-            const events = eventCards.querySelectorAll(".event-card");
-            if (clear) {
-                events.forEach(event => {
-                    event.style.display = "block";
-                });
-            }
-            else {
-                const titleKeyword = titleEvent.value.toLowerCase().trim();
-                const descriptionKeyword = descriptionEvent.value.toLowerCase().trim();
-                events.forEach(event => {
-                    const title = event.querySelector("h3").innerText.toLowerCase();
-                    const eventDescription = event.querySelector('.event-description').innerText.toLowerCase();
-                    if (title.includes(titleKeyword) && eventDescription.includes(descriptionKeyword)) {
-                        event.style.display = "block";
-                    } else {
-                        event.style.display = "none";
-                    }
-                });
-            }
+          const eventCards = document.querySelector("#event-list");
+          const events = eventCards.querySelectorAll(".event-card");
+          if (clear) {
+            events.forEach((event) => {
+              event.style.display = "block";
+            });
+          } else {
+            const titleKeyword = titleEvent.value.toLowerCase().trim();
+            const descriptionKeyword = descriptionEvent.value
+              .toLowerCase()
+              .trim();
+            events.forEach((event) => {
+              const title = event.querySelector("h3").innerText.toLowerCase();
+              const eventDescription = event
+                .querySelector(".event-description")
+                .innerText.toLowerCase();
+              if (
+                title.includes(titleKeyword) &&
+                eventDescription.includes(descriptionKeyword)
+              ) {
+                event.style.display = "block";
+              } else {
+                event.style.display = "none";
+              }
+            });
+          }
         }
-    </script>
-    <ul id="event-list"></ul>
-</article>
-<!-- The "footer-content" div is the same across all pages -->
-<div class="footer-content">
-    <footer class="main-footer">
+      </script>
+      <ul id="event-list"></ul>
+    </article>
+    <!-- The "footer-content" div is the same across all pages -->
+    <div class="footer-content">
+      <footer class="main-footer">
         <!-- nav for pages on website -->
         <nav>
-            <ul>
-                <li><a href="index.html">About Me</a></li>
-                <li>
-                    <a href="marketable-skills-and-abilities.html">Marketable Skills and Abilities</a>
-                </li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="resume.html">Resume</a></li>
-                <li><a href="contact-me.html">Contact Me</a></li>
-            </ul>
+          <ul>
+            <li><a href="index.html">About Me</a></li>
+            <li>
+              <a href="marketable-skills-and-abilities.html"
+                >Marketable Skills and Abilities</a
+              >
+            </li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="contact-me.html">Contact Me</a></li>
+          </ul>
         </nav>
-    </footer>
-    <footer class="social-media">
+      </footer>
+      <footer class="social-media">
         <!-- nav for socials -->
         <nav>
-            <ul>
-                <li>
-                    <a href="https://www.linkedin.com/in/tommyg128">LinkedIn</a>
-                </li>
-                <li><a href="https://www.github.com/Penguini128">GitHub</a></li>
-            </ul>
+          <ul>
+            <li>
+              <a href="https://www.linkedin.com/in/tommyg128">LinkedIn</a>
+            </li>
+            <li><a href="https://www.github.com/Penguini128">GitHub</a></li>
+          </ul>
         </nav>
-    </footer>
-    <footer>
+      </footer>
+      <footer>
         <!-- Just a div for copyright notice -->
         <div class="copyright">
-            <p>Copyright 2024 - Tommy Galletta</p>
+          <p>Copyright 2024 - Tommy Galletta</p>
         </div>
-    </footer>
-</div>
-</body>
-
+      </footer>
+    </div>
+  </body>
 </html>
