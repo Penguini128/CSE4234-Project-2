@@ -27,45 +27,60 @@
             </ul>
         </nav>
         <div>
-            <h2>Event Manager</h2>
-            <div style="display: flex; gap: 20px">
+          <h2>Event Manager</h2>
+          <div class="filterResults"> </div>
+          <h3> Filter Events </h3>
+          <div class="filterOptions">
             <span style="display: flex">
               <span
-                      style="background-color: #e2e2e2; color: black; padding: 10px"
-              >Title</span
+                style="background-color: #e2e2e2; color: black; padding: 10px; border-radius: 5px 0px 0px 5px; margin: 0px 0px 15px 0px;"
+                >Title</span
               >
               <input
-                      type="text"
-                      style="border: none; padding: 0 5px"
-                      id="titleInput"
+                type="text"
+                style="border: none; padding: 0 5px; border-radius: 0px 5px 5px 0px; margin: 0px 0px 15px 0px;"
+                id="titleInput"
               />
             </span>
                 <span style="display: flex">
               <span
-                      style="background-color: #e2e2e2; color: black; padding: 10px"
-              >Desc</span
+                style="background-color: #e2e2e2; color: black; padding: 10px; border-radius: 5px 0px 0px 5px; margin: 0px 0px 15px 0px;"
+                >Desc</span
+              >
+              <input
+                type="text"
+                style="border: none; padding: 0 5px; border-radius: 0px 5px 5px 0px; margin: 0px 0px 15px 0px;"
+                id="descriptionInput"
+              />
+            </span>
+            <span style="display: flex">
+              <span
+                      style="background-color: #e2e2e2; color: black; padding: 10px; border-radius: 5px 0px 0px 5px; margin: 0px 0px 15px 0px;"
+              >Date</span
               >
               <input
                       type="text"
-                      style="border: none; padding: 0 5px"
-                      id="descriptionInput"
+                      style="border: none; padding: 0 5px; border-radius: 0px 5px 5px 0px; margin: 0px 0px 15px 0px;"
+                      id="dateInput"
               />
             </span>
-                <button onclick="filterEvents()">Submit</button>
-                <button onclick="clearFilters()">Clear Filters</button>
-            </div>
+            <button onclick="searchEvents(false)" style="padding: 10px; border-radius: 5px; margin: 0px 0px 15px 0px;">Submit</button>
+            <button onclick="searchEvents(true)" style="padding: 10px; border-radius: 5px; margin: 0px 0px 15px 0px;">Clear Filters</button>
+          </div>
         </div>
-    </div>
-</header>
+      </div>
+    </header>
 
-<script>
-    async function fetchEvents() {
-        const file = await fetch("events.rss");
-        const fileText = await file.text();
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(fileText, "text/xml");
-        const events = [];
-        xml.querySelectorAll("item").forEach((item) => {
+    <article>
+      <script>
+        "use strict";
+        async function fun() {
+          const file = await fetch("events.rss");
+          const fileText = await file.text();
+          const parser = new DOMParser();
+          const xml = parser.parseFromString(fileText, "text/xml");
+          const eventCards = document.querySelector("#event-list");
+          xml.querySelectorAll("item").forEach((item) => {
             const itemTitle = item.querySelector("title").textContent;
             const itemDate = new Date(item.querySelector("start").textContent);
             const itemTime = itemDate.toDateString();

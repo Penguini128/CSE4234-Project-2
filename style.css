@@ -75,6 +75,11 @@ h2:after {
   width: 85vw;
 }
 
+.filterOptions {
+    display: flex;
+    gap: 20px;
+}
+
 article {
   margin: 2em;
 }
@@ -193,5 +198,17 @@ footer.social-media nav ul li {
     display: block;
     max-width: 100%;
     height: auto;
+  }
+
+  .filterOptions {
+    display: block;
+
+    input {
+        width: 100%;
+    }
+    button {
+        display: inline-block;
+        width: 49.5%;
+    }
   }
 }
