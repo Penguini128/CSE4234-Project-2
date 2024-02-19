@@ -28,31 +28,44 @@
         </nav>
         <div>
           <h2>Event Manager</h2>
-          <div style="display: flex; gap: 20px">
+          <div class="filterResults"> </div>
+          <h3> Filter Events </h3>
+          <div class="filterOptions">
             <span style="display: flex">
               <span
-                style="background-color: #e2e2e2; color: black; padding: 10px"
+                style="background-color: #e2e2e2; color: black; padding: 10px; border-radius: 5px 0px 0px 5px; margin: 0px 0px 15px 0px;"
                 >Title</span
               >
               <input
                 type="text"
-                style="border: none; padding: 0 5px"
+                style="border: none; padding: 0 5px; border-radius: 0px 5px 5px 0px; margin: 0px 0px 15px 0px;"
                 id="titleInput"
               />
             </span>
             <span style="display: flex">
               <span
-                style="background-color: #e2e2e2; color: black; padding: 10px"
+                style="background-color: #e2e2e2; color: black; padding: 10px; border-radius: 5px 0px 0px 5px; margin: 0px 0px 15px 0px;"
                 >Desc</span
               >
               <input
                 type="text"
-                style="border: none; padding: 0 5px"
+                style="border: none; padding: 0 5px; border-radius: 0px 5px 5px 0px; margin: 0px 0px 15px 0px;"
                 id="descriptionInput"
               />
             </span>
-            <button onclick="searchEvents(false)">Submit</button>
-            <button onclick="searchEvents(true)">Clear Filters</button>
+            <span style="display: flex">
+              <span
+                      style="background-color: #e2e2e2; color: black; padding: 10px; border-radius: 5px 0px 0px 5px; margin: 0px 0px 15px 0px;"
+              >Date</span
+              >
+              <input
+                      type="text"
+                      style="border: none; padding: 0 5px; border-radius: 0px 5px 5px 0px; margin: 0px 0px 15px 0px;"
+                      id="dateInput"
+              />
+            </span>
+            <button onclick="searchEvents(false)" style="padding: 10px; border-radius: 5px; margin: 0px 0px 15px 0px;">Submit</button>
+            <button onclick="searchEvents(true)" style="padding: 10px; border-radius: 5px; margin: 0px 0px 15px 0px;">Clear Filters</button>
           </div>
         </div>
       </div>
@@ -60,6 +73,7 @@
 
     <article>
       <script>
+        "use strict";
         async function fun() {
           const file = await fetch("events.rss");
           const fileText = await file.text();
@@ -142,15 +156,23 @@
           });
         }
         fun();
+
         const titleEvent = document.getElementById("titleInput");
         titleEvent.addEventListener("keydown", (event) => {
           if (event.key === "Enter") {
             searchEvents(false);
           }
         });
-        const descriptionEvent = document.getElementById("descriptionInput");
 
+        const descriptionEvent = document.getElementById("descriptionInput");
         descriptionEvent.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            searchEvents(false);
+          }
+        });
+
+        const dateEvent = document.getElementById("dateInput");
+        dateEvent.addEventListener("keydown", (event) => {
           if (event.key === "Enter") {
             searchEvents(false);
           }
@@ -159,6 +181,7 @@
         function searchEvents(clear) {
           const eventCards = document.querySelector("#event-list");
           const events = eventCards.querySelectorAll(".event-card");
+          let counter = 0;
           if (clear) {
             events.forEach((event) => {
               event.style.display = "block";
@@ -168,6 +191,9 @@
             const descriptionKeyword = descriptionEvent.value
               .toLowerCase()
               .trim();
+            const dateKeyword = dateEvent.value
+              .toLowerCase()
+              .trim();
             events.forEach((event) => {
               const title = event.querySelector("h3").innerText.toLowerCase();
               const eventDescription = event
@@ -175,12 +201,19 @@
                 .innerText.toLowerCase();
               if (
                 title.includes(titleKeyword) &&
-                eventDescription.includes(descriptionKeyword)
+                eventDescription.includes(descriptionKeyword) &&
+                eventDescription.includes(dateKeyword)
               ) {
                 event.style.display = "block";
+                counter = counter + 1;
               } else {
                 event.style.display = "none";
               }
+
+              const numResults = document.querySelector(".filterResults");
+              numResults.style.color = '#23649e';
+              numResults.textContent = "Showing " + counter + "/339 events";
+
             });
           }
         }
