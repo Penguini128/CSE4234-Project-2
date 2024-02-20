@@ -144,6 +144,7 @@ footer.social-media nav ul li {
   border-color: lightgray;
   margin: 0rem;
   max-width: 20%;
+  height: auto;
   list-style: none;
   display: inline-block;
   vertical-align: top;
@@ -152,8 +153,9 @@ footer.social-media nav ul li {
 .card-container {
   margin: 8px;
   box-shadow: 0px 0px 10px #222222;
-  height: 450px;
   overflow: hidden;
+  min-height: 450px;
+  height: auto;
 }
 
 .event-card img {
@@ -172,6 +174,19 @@ footer.social-media nav ul li {
 
 .event-description {
   font-size: 11px;
+}
+
+.description-button {
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 18px;
+  background: none;
+  padding: 5px;
+}
+
+.description-button:hover {
+  border-color:#777;
+  color: #777;
 }
 
 @media screen and (max-width: 768px) {
