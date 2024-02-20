@@ -56,8 +56,9 @@
             const eventCards = document.querySelector("#event-list");
             xml.querySelectorAll("item").forEach((item) => {
               const itemTitle = item.querySelector("title").textContent;
-              const itemDate = new Date(item.querySelector("start").textContent);
-              const itemTime = itemDate.toDateString();
+              let date_format = {month: 'long', day: 'numeric', year: 'numeric', hour: "numeric", minute: "2-digit", timeZoneName: "short"};
+              const itemDate = new Date(item.querySelector("start").textContent).toLocaleDateString('en-US', date_format);
+              const itemTime = itemDate;
               const itemLocation = item.querySelector("location").textContent;
               const itemDescriptionData = item.querySelector("description").textContent;
               const itemDescription = parser.parseFromString(itemDescriptionData, "text/xml").querySelector("div").textContent;
