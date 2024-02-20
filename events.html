@@ -1,230 +1,193 @@
-<!DOCTYPE html>console
+<!DOCTYPE html>
 <html lang="en">
-    <!-- The info in this head tag is the same across all pages -->
+  <!-- The info in this head tag is the same across all pages -->
 
-    <head>
-        <link rel="stylesheet" href="style.css" />
-        <title>Tommy Galletta's Portfolio</title>
-    </head>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <title>Tommy Galletta's Portfolio</title>
+  </head>
 
-    <body>
-        <!-- The layout of this header is essentially the same across all pages -->
-        <header>
-            <div class="header-content">
-                <h1>Tommy Galletta's Portfolio</h1>
-                <nav>
-                    <ul>
-                        <li><a href="index.html">About Me</a></li>
-                        <li>
-                            <a href="marketable-skills-and-abilities.html"
-                                >Marketable Skills and Abilities</a
-                            >
-                        </li>
-                        <li><a href="projects.html">Projects</a></li>
-                        <li><a href="resume.html">Resume</a></li>
-                        <li><a href="contact-me.html">Contact Me</a></li>
-                        <li class="active"><a href="events.html">Events</a></li>
-                    </ul>
-                </nav>
-                <div>
-                    <h2>Event Manager</h2>
-                    <div class="filterResults"> </div>
-                    <h3> Filter Events </h3>
-                    <div class="filterOptions">
-                        <span style="display: flex">
-                            <span
-                                style="background-color: #e2e2e2; color: black; padding: 10px; border-radius: 5px 0px 0px 5px; margin: 0px 0px 15px 0px;"
-                                >Title</span
-                            >
-                            <input
-                                type="text"
-                                style="border: none; padding: 0 5px; border-radius: 0px 5px 5px 0px; margin: 0px 0px 15px 0px;"
-                                id="titleInput"
-                            />
-                        </span>
-                        <span style="display: flex">
-                            <span
-                                style="background-color: #e2e2e2; color: black; padding: 10px; border-radius: 5px 0px 0px 5px; margin: 0px 0px 15px 0px;"
-                                >Desc</span
-                            >
-                            <input
-                                type="text"
-                                style="border: none; padding: 0 5px; border-radius: 0px 5px 5px 0px; margin: 0px 0px 15px 0px;"
-                                id="descriptionInput"
-                            />
-                        </span>
-                        <span style="display: flex">
-                            <span
-                                            style="background-color: #e2e2e2; color: black; padding: 10px; border-radius: 5px 0px 0px 5px; margin: 0px 0px 15px 0px;"
-                            >Date</span
-                            >
-                            <input
-                                            type="text"
-                                            style="border: none; padding: 0 5px; border-radius: 0px 5px 5px 0px; margin: 0px 0px 15px 0px;"
-                                            id="dateInput"
-                            />
-                        </span>
-                        <button onclick="searchEvents(false)" style="padding: 10px; border-radius: 5px; margin: 0px 0px 15px 0px;">Submit</button>
-                        <button onclick="searchEvents(true)" style="padding: 10px; border-radius: 5px; margin: 0px 0px 15px 0px;">Clear Filters</button>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <article>
-            <script>
-                "use strict";
-                    fetch("events.rss")
-                    .then((result) => result.text())
-                    .then((result) => {
-                        const parser = new DOMParser();
-                        const xml = parser.parseFromString(result, "text/xml");
-                        const eventCards = document.querySelector("#event-list");
-                        xml.querySelectorAll("item").forEach((item) => {
-                            const itemTitle = item.querySelector("title").textContent;
-                            const itemDate = new Date(item.querySelector("start").textContent);
-                            const itemTime = itemDate.format();
-                            const itemLocation = item.querySelector("location").textContent;
-                            const itemDescriptionData = item.querySelector("description").textContent;
-                            const itemDescription = parser.parseFromString(itemDescriptionData, "text/xml").querySelector("div").textContent;
-                            const itemImageUrlTest = item.querySelector("enclosure").getAttribute("url");
-                            const itemImage = itemImageUrlTest == null ? "images/default_image.jpg" : itemImageUrlTest;
-                            // change here from hard code html to a list
-                            eventCards.innerHTML += `<atricle class="event-card">
-                                                                                                        <div class="card-container">
-                                                                                                                <img src="${itemImage}"/>
-                                                                                                                <div class="card-text">
-                                                                                                                        <h3>${itemTitle}</h3>
-                                                                                                                        <p>
-                                                                                                                                ${itemTime}
-                                                                                                                                <br>
-                                                                                                                                ${itemLocation}
-                                                                                                                        </p>
-                                                                                                                        <button class="description-button">Learn More</button>
-                                                                                                                        <p class="event-description" style="display:none;">
-                                                                                                                                ${itemDescription}
-                                                                                                                        </p>
-                                                                                                                <div>
-                                                                                                        </div>
-                                                                                                </article>`;
-                        });
-                        document.querySelectorAll(".card-container").forEach((item) => {
-                            const descriptionButton = item.querySelector("button");
-                            const cardDescription = item.querySelector(".event-description");
-                            descriptionButton.addEventListener("click", function () {
-                                if (cardDescription.style.display == "block") {
-                                    cardDescription.style.display = "none";
-                                } else {
-                                    cardDescription.style.display = "block";
-                                }
-                            });
-                        });
-                })
-
-                const titleEvent = document.getElementById("titleInput");
-                titleEvent.addEventListener("keydown", (event) => {
-                    if (event.key === "Enter") {
-                        searchEvents(false);
-                    }
-                });
-
-                const descriptionEvent = document.getElementById("descriptionInput");
-                descriptionEvent.addEventListener("keydown", (event) => {
-                    if (event.key === "Enter") {
-                        searchEvents(false);
-                    }
-                });
-
-                const dateEvent = document.getElementById("dateInput");
-                dateEvent.addEventListener("keydown", (event) => {
-                    if (event.key === "Enter") {
-                        searchEvents(false);
-                    }
-                });
-
-                function searchEvents(clear) {
-                    const eventCards = document.querySelector("#event-list");
-                    const events = eventCards.querySelectorAll(".event-card");
-                    let counter = 0;
-                    if (clear) {
-                        events.forEach((event) => {
-                            event.style.display = "block";
-                        });
-                        const numResults = document.querySelector(".filterResults");
-                        numResults.style.color = '#23649e';
-                        numResults.textContent = "";
-                        titleEvent.value = "";
-                        descriptionEvent.value = "";
-                        dateEvent.value = "";
-                    } else {
-                        const titleKeyword = titleEvent.value.toLowerCase().trim();
-                        const descriptionKeyword = descriptionEvent.value
-                            .toLowerCase()
-                            .trim();
-                        const dateKeyword = dateEvent.value
-                            .toLowerCase()
-                            .trim();
-                        events.forEach((event) => {
-                            const title = event.querySelector("h3").innerText.toLowerCase();
-                            const eventDescription = event
-                                .querySelector(".event-description")
-                                .innerText.toLowerCase();
-                            if (
-                                title.includes(titleKeyword) &&
-                                eventDescription.includes(descriptionKeyword) &&
-                                eventDescription.includes(dateKeyword)
-                            ) {
-                                event.style.display = "block";
-                                counter = counter + 1;
-                            } else {
-                                event.style.display = "none";
-                            }
-
-                            const numResults = document.querySelector(".filterResults");
-                            numResults.style.color = '#23649e';
-                            numResults.textContent = "Showing " + counter + "/339 events";
-
-                        });
-                    }
-                }
-            </script>
-            <ul id="event-list"></ul>
-        </article>
-        <!-- The "footer-content" div is the same across all pages -->
-        <div class="footer-content">
-            <footer class="main-footer">
-                <!-- nav for pages on website -->
-                <nav>
-                    <ul>
-                        <li><a href="index.html">About Me</a></li>
-                        <li>
-                            <a href="marketable-skills-and-abilities.html"
-                                >Marketable Skills and Abilities</a
-                            >
-                        </li>
-                        <li><a href="projects.html">Projects</a></li>
-                        <li><a href="resume.html">Resume</a></li>
-                        <li><a href="contact-me.html">Contact Me</a></li>
-                    </ul>
-                </nav>
-            </footer>
-            <footer class="social-media">
-                <!-- nav for socials -->
-                <nav>
-                    <ul>
-                        <li>
-                            <a href="https://www.linkedin.com/in/tommyg128">LinkedIn</a>
-                        </li>
-                        <li><a href="https://www.github.com/Penguini128">GitHub</a></li>
-                    </ul>
-                </nav>
-            </footer>
-            <footer>
-                <!-- Just a div for copyright notice -->
-                <div class="copyright">
-                    <p>Copyright 2024 - Tommy Galletta</p>
-                </div>
-            </footer>
+  <body>
+    <!-- The layout of this header is essentially the same across all pages -->
+    <header>
+      <div class="header-content">
+        <h1>Tommy Galletta's Portfolio</h1>
+        <nav>
+          <ul>
+            <li><a href="index.html">About Me</a></li>
+            <li><a href="marketable-skills-and-abilities.html">Marketable Skills and Abilities</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="contact-me.html">Contact Me</a></li>
+            <li class="active"><a href="events.html">Events</a></li>
+          </ul>
+        </nav>
+        <div>
+          <h2>Event Manager</h2>
+          <div class="filterResults"> </div>
+          <h3> Filter Events </h3>
+          <div class="filterOptions">
+            <span>
+              <span>Title</span>
+              <input class="text-field" type="text" id="titleInput"/>
+            </span>
+            <span>
+              <span>Desc</span>
+              <input class="text-field" type="text" id="descriptionInput"/>
+            </span>
+            <span>
+              <span>Date</span>
+              <input class="text-field" type="text" id="dateInput"/>
+            </span>
+            <button onclick="filter(false)">Submit</button>
+            <button onclick="clearFilters()">Clear Filters</button>
+          </div>
         </div>
-    </body>
+      </div>
+    </header>
+    <article>
+      <script>
+        "use strict";
+          fetch("events.rss")
+          .then((result) => result.text())
+          .then((result) => {
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(result, "text/xml");
+            const eventCards = document.querySelector("#event-list");
+            xml.querySelectorAll("item").forEach((item) => {
+              const itemTitle = item.querySelector("title").textContent;
+              const itemDate = new Date(item.querySelector("start").textContent);
+              const itemTime = itemDate.toDateString();
+              const itemLocation = item.querySelector("location").textContent;
+              const itemDescriptionData = item.querySelector("description").textContent;
+              const itemDescription = parser.parseFromString(itemDescriptionData, "text/xml").querySelector("div").textContent;
+              const itemImageUrlTest = item.querySelector("enclosure").getAttribute("url");
+              const itemImage = itemImageUrlTest == null ? "images/default_image.jpg" : itemImageUrlTest;
+              eventCards.innerHTML += `<atricle class="event-card">
+                                                    <div class="card-container">
+                                                        <img src="${itemImage}"/>
+                                                        <div class="card-text">
+                                                            <h3>${itemTitle}</h3>
+                                                            <p class="event-info">
+                                                                ${itemTime}
+                                                                <br>
+                                                                ${itemLocation}
+                                                            </p>
+                                                            <button class="description-button">Learn More</button>
+                                                            <p class="event-description" style="display:none;">
+                                                                ${itemDescription}
+                                                            </p>
+                                                        <div>
+                                                    </div>
+                                                </article>`;
+            });
+            document.querySelectorAll(".card-container").forEach((item) => {
+              const descriptionButton = item.querySelector("button");
+              const cardDescription = item.querySelector(".event-description");
+              descriptionButton.addEventListener("click", () => cardDescription.style.display = cardDescription.style.display == "block" ? "none" : "block" );
+            });
+        })
+
+        document.querySelectorAll(".text-field").forEach((item) => {
+          item.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+              filter(false);
+            }
+          });
+        });
+
+        function filterEvents(events, filterValue, filterFunction) {
+          if (filterValue == "") return events;
+          let filtered = [];
+          events.forEach((item) => {
+              if (filterFunction(item, filterValue)) {
+                filtered.push(item);
+              }
+          });
+          return filtered;
+        }
+
+        function titleFilter(event, value) {
+          return event.querySelector("h3").textContent.toLowerCase().includes(value);
+        }
+
+        function descriptionFilter(event, value) {
+          return event.querySelector(".event-description").textContent.toLowerCase().includes(value);
+        }
+
+        function dateFilter(event, value) {
+          return event.querySelector(".event-info").textContent.toLowerCase().includes(value);
+        }
+
+        function clearFilters() {
+          const eventCards = document.querySelector("#event-list");
+          const events = eventCards.querySelectorAll(".event-card");
+          events.forEach((event) => {
+            event.style.display = "block";
+          });
+          const numResults = document.querySelector(".filterResults");
+          numResults.style.color = '#23649e';
+          numResults.textContent = "";
+          document.querySelectorAll(".text-field").forEach((item) => item.value = "");
+        }
+
+        function filter() {
+          const eventCards = document.querySelector("#event-list");
+          const events = eventCards.querySelectorAll(".event-card");
+          const filterObj = {
+            "title" : document.querySelector("#titleInput").value.toLowerCase(),
+            "startDate" : document.querySelector("#dateInput").value.toLowerCase(),
+            "description" : document.querySelector("#descriptionInput").value.toLowerCase(),
+          }
+          const filteredByTitle = filterEvents(events, filterObj.title, titleFilter);
+          const filteredByDate = filterEvents(filteredByTitle, filterObj.startDate, dateFilter);
+          const filteredByDesc = filterEvents(filteredByDate, filterObj.description, descriptionFilter);
+
+          events.forEach((item) => item.style.display = filteredByDesc.includes(item) ? "block" : "none");
+
+          const numResults = document.querySelector(".filterResults");
+          numResults.style.color = '#23649e';
+          numResults.textContent = "Showing " + filteredByDesc.length + "/339 events";
+
+        }
+      </script>
+      <ul id="event-list"></ul>
+    </article>
+    <!-- The "footer-content" div is the same across all pages -->
+    <div class="footer-content">
+      <footer class="main-footer">
+        <!-- nav for pages on website -->
+        <nav>
+          <ul>
+            <li><a href="index.html">About Me</a></li>
+            <li>
+              <a href="marketable-skills-and-abilities.html"
+                >Marketable Skills and Abilities</a
+              >
+            </li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="resume.html">Resume</a></li>
+            <li><a href="contact-me.html">Contact Me</a></li>
+          </ul>
+        </nav>
+      </footer>
+      <footer class="social-media">
+        <!-- nav for socials -->
+        <nav>
+          <ul>
+            <li>
+              <a href="https://www.linkedin.com/in/tommyg128">LinkedIn</a>
+            </li>
+            <li><a href="https://www.github.com/Penguini128">GitHub</a></li>
+          </ul>
+        </nav>
+      </footer>
+      <footer>
+        <!-- Just a div for copyright notice -->
+        <div class="copyright">
+          <p>Copyright 2024 - Tommy Galletta</p>
+        </div>
+      </footer>
+    </div>
+  </body>
 </html>

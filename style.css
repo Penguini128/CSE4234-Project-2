@@ -189,6 +189,31 @@ footer.social-media nav ul li {
   color: #777;
 }
 
+.filterOptions span {
+  display: flex;
+}
+
+.filterOptions span span {
+  background-color: #e2e2e2;
+  color: black;
+  padding: 10px;
+  border-radius: 5px 0px 0px 5px;
+  margin: 0px 0px 15px 0px;
+}
+
+.filterOptions span input {
+  border: none;
+  padding: 0 5px;
+  border-radius: 0px 5px 5px 0px;
+  margin: 0px 0px 15px 0px;
+}
+
+.filterOptions button {
+  padding: 10px;
+  border-radius: 5px;
+  margin: 0px 0px 15px 0px;
+}
+
 @media screen and (max-width: 768px) {
   header nav ul li {
     display: block;
