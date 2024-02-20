@@ -137,22 +137,6 @@
             cardContainer.appendChild(cardText);
             eventCard.appendChild(cardContainer);
             eventCards.appendChild(eventCard);
-            // eventCards.innerHTML += `<li class="event-card">
-            //                                         <div class="card-container">
-            //                                             <img src="${itemImage}"/>
-            //                                             <div class="card-text">
-            //                                                 <h3>${itemTitle}</h3>
-            //                                                 <p>
-            //                                                     ${itemTime}
-            //                                                     <br>
-            //                                                     ${itemLocation}
-            //                                                 </p>
-            //                                                 <p class="event-description">
-            //                                                     ${itemDescription}
-            //                                                 </p>
-            //                                             <div>
-            //                                         </div>
-            //                                     </li>`;
           });
         }
         fun();
@@ -186,6 +170,12 @@
             events.forEach((event) => {
               event.style.display = "block";
             });
+            const numResults = document.querySelector(".filterResults");
+            numResults.style.color = '#23649e';
+            numResults.textContent = "";
+            titleEvent.value = "";
+            descriptionEvent.value = "";
+            dateEvent.value = "";
           } else {
             const titleKeyword = titleEvent.value.toLowerCase().trim();
             const descriptionKeyword = descriptionEvent.value
