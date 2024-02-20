@@ -64,29 +64,29 @@
               const itemImageUrlTest = item.querySelector("enclosure").getAttribute("url");
               const itemImage = itemImageUrlTest == null ? "images/default_image.jpg" : itemImageUrlTest;
               eventCards.innerHTML += `<atricle class="event-card">
-                                                    <div class="card-container">
-                                                        <img src="${itemImage}"/>
-                                                        <div class="card-text">
-                                                            <h3>${itemTitle}</h3>
-                                                            <p class="event-info">
-                                                                ${itemTime}
-                                                                <br>
-                                                                ${itemLocation}
-                                                            </p>
-                                                            <button class="description-button">Learn More</button>
-                                                            <p class="event-description" style="display:none;">
-                                                                ${itemDescription}
-                                                            </p>
-                                                        <div>
-                                                    </div>
-                                                </article>`;
+                                            <div class="card-container">
+                                                <img src="${itemImage}"/>
+                                                <div class="card-text">
+                                                    <h3>${itemTitle}</h3>
+                                                    <p class="event-info">
+                                                        ${itemTime}
+                                                        <br>
+                                                        ${itemLocation}
+                                                    </p>
+                                                    <button class="description-button">Learn More</button>
+                                                    <p class="event-description" style="display:none;">
+                                                        ${itemDescription}
+                                                    </p>
+                                                <div>
+                                            </div>
+                                        </article>`;
             });
             document.querySelectorAll(".card-container").forEach((item) => {
               const descriptionButton = item.querySelector("button");
               const cardDescription = item.querySelector(".event-description");
               descriptionButton.addEventListener("click", () => cardDescription.style.display = cardDescription.style.display == "block" ? "none" : "block" );
             });
-        })
+        });
 
         document.querySelectorAll(".text-field").forEach((item) => {
           item.addEventListener("keydown", (event) => {
